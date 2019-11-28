@@ -9,5 +9,5 @@ ADD_LIBRARY(LibsModule model.cpp)
 target_link_libraries(LibsModule -lsimlib)
 target_link_libraries(LibsModule -lm)
 
-add_executable(IMS model.cpp model.h)
+add_executable(IMS model.cpp model.h House.cpp House.h)
 target_link_libraries(IMS LibsModule)
