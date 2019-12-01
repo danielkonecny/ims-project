@@ -13,10 +13,14 @@ class House {
 public:
     void Print();
     double CountEmissions(double emissions_constant);
-    double CountAreaEmissionsWithPercentage(double emissions_constant, double percentage);
+    double CountAreaEmissionsWithPercentage(double emissions_constant, double heating_percentage);
     double CountPeopleEmissions(double emissions_constant);
+    double CountHouseHeatLossPerDay(double heating_percentage);
+    double CountPeopleHeatLossPerDay();
+    double CountPeopleLitersLossPerDay();
     int number_of_people;
     int area;
+    int distance;
 };
 
 #endif //IMS_HOUSE_H
