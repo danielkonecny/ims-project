@@ -221,7 +221,7 @@ int main(int argc, char *argv[]) {
     const double construction_emissions_station = 80e6;
     const double construction_emissions_plant = 80e6;
     double nuclear_construction_emissions;
-    double years_to_return;
+    double years_to_return_gas, years_to_return_coal, years_to_return_electricity;
 
     for (int i = 1; i <= days_per_year; i++) {
         double heating_liters = 0, cooking_liters = 0, station_liters = 0;
@@ -302,10 +302,9 @@ int main(int argc, char *argv[]) {
             construction_emissions_1km_narrow_pipeline * 15 +
             construction_emissions_station + construction_emissions_plant;
 
-    years_to_return = nuclear_construction_emissions / (gas_emissions - nuclear_emissions);
-
-    cout << "Nuclear Construction Emissions (t): " << nuclear_construction_emissions << endl;
-    cout << "Will return in " << years_to_return << " years." << endl;
+    years_to_return_gas = nuclear_construction_emissions / (gas_emissions - nuclear_emissions);
+    years_to_return_coal = nuclear_construction_emissions / (coal_emissions - nuclear_emissions);
+    years_to_return_electricity = nuclear_construction_emissions / (electricity_emissions - nuclear_emissions);
 
     if (print_debug) {
         cout << endl << "Year Average: " << year_temperature_count / 365 << " °C" << endl;
@@ -323,26 +322,32 @@ int main(int argc, char *argv[]) {
         cout << "Station Pump Percentage: " << plant_pump_percentage << " %" << endl << endl;
     }
 
-    cout << "CALCULATED VALUES" << endl;
-    cout << "Year Gas Emissions (t): " << gas_emissions / 1e6 << endl;
-    cout << "Year Coal Emissions (t): " << coal_emissions / 1e6 << endl;
-    cout << "Year Electricity Emissions (t): " << electricity_emissions / 1e6 << endl;
-    cout << "Year Nuclear Emissions (t): " << nuclear_emissions / 1e6 << endl << endl;
+    cout << "Year Gas Emissions: " << gas_emissions / 1e6 << " t" << endl;
+    cout << "Year Coal Emissions: " << coal_emissions / 1e6 << " t" << endl;
+    cout << "Year Electricity Emissions: " << electricity_emissions / 1e6 << " t" << endl;
+    cout << "Year Nuclear Emissions: " << nuclear_emissions / 1e6 << " t" << endl;
+    cout << "Nuclear Construction Emissions: " << nuclear_construction_emissions / 1e6 << " t" << endl << endl;
 
-    gas_emissions = 0;
-    coal_emissions = 0;
-    electricity_emissions = 0;
+    cout << "Will return in " << years_to_return_gas << " years to gas." << endl;
+    cout << "Will return in " << years_to_return_coal << " years to coal." << endl;
+    cout << "Will return in " << years_to_return_electricity << " years to electricity." << endl;
 
-    for (auto it = houses.begin(); it != houses.end(); it++) {
-        gas_emissions += it->CountEmissions(gas_emissions_constant);
-        coal_emissions += it->CountEmissions(coal_emissions_constant);
-        electricity_emissions += it->CountEmissions(electricity_emissions_constant);
+    if (print_debug) {
+        gas_emissions = 0;
+        coal_emissions = 0;
+        electricity_emissions = 0;
+
+        for (auto it = houses.begin(); it != houses.end(); it++) {
+            gas_emissions += it->CountEmissions(gas_emissions_constant);
+            coal_emissions += it->CountEmissions(coal_emissions_constant);
+            electricity_emissions += it->CountEmissions(electricity_emissions_constant);
+        }
+
+        cout << endl << "AVERAGE VALUES (dodavatelelektriny.cz)" << endl;
+        cout << "Overall Gas Emissions (t): " << gas_emissions / 1e6 << endl;
+        cout << "Overall Coal Emissions (t): " << coal_emissions / 1e6 << endl;
+        cout << "Overall Electricity Emissions (t): " << electricity_emissions / 1e6 << endl << endl;
     }
-
-    cout << "AVERAGE VALUES (dodavatelelektriny.cz)" << endl;
-    cout << "Overall Gas Emissions (t): " << gas_emissions / 1e6 << endl;
-    cout << "Overall Coal Emissions (t): " << coal_emissions / 1e6 << endl;
-    cout << "Overall Electricity Emissions (t): " << electricity_emissions / 1e6 << endl << endl;
 
     return 0;
 }
