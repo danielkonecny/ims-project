@@ -30,10 +30,10 @@ clear:
 	rm *.o $(BIN)
 
 pack:
-	zip $(PACK).zip *.$(SUFFIX) *.h
+	zip $(PACK).zip *.$(SUFFIX) *.h Makefile doc.pdf
 
 zip:
-	zip $(PACK).zip *.$(SUFFIX) *.h
+	zip $(PACK).zip *.$(SUFFIX) *.h Makefile doc.pdf
 
 # Binary
 $(BIN): $(BIN).o House.o
