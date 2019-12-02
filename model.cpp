@@ -271,7 +271,12 @@ int main(int argc, char *argv[]) {
 		print_debug = true;
 	}
 
-	generate_houses(30, 120, 1, 6, 5000, 200, 2000, &houses);
+	const int number_of_houses = 50;
+	const int min_area = 30, max_area = 120;
+	const int min_people = 1, max_people = 6;
+	const int min_distance = 200, max_distance = 2000;
+
+	generate_houses(min_area, max_area, min_people, max_people, number_of_houses, min_distance, max_distance, &houses);
 
 	const double water_pump_year_capacity = 567648000;
 	double heating_pump_percentage, cooking_pump_percentage, plant_pump_percentage;
@@ -279,7 +284,7 @@ int main(int argc, char *argv[]) {
 	double heating_pump_power, cooking_pump_power, plant_pump_power;
 
 	const double wide_pipeline_length = 5;
-	const double narrow_pipeline_length = 700;
+	const double narrow_pipeline_length = 15;
 	const double construction_emissions_1km_wide_pipeline = 75e6;
 	const double construction_emissions_1km_narrow_pipeline = 50e6;
 	const double construction_emissions_station = 120e6;
@@ -336,6 +341,11 @@ int main(int argc, char *argv[]) {
 		cout << "Station Pump Percentage: " << plant_pump_percentage << " %" << endl << endl;
 	}
 
+	cout << "STATISTICS" << endl;
+	cout << "- Number of houses: " << number_of_houses << endl;
+	cout << "- Area: " << min_area << " - " << max_area << " m^2" << endl;
+	cout << "- People: " << min_people << " - " << max_people << endl;
+	cout << "- Distance: " << min_distance << " - " << max_distance << " m" << endl;
 	cout << "Year Gas Emissions: " << gas_emissions / 1e6 << " t" << endl;
 	cout << "Year Coal Emissions: " << coal_emissions / 1e6 << " t" << endl;
 	cout << "Year Electricity Emissions: " << electricity_emissions / 1e6 << " t" << endl;
