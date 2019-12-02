@@ -26,9 +26,6 @@ const double nuclear_emissions_constant = 0.00427;
 
 bool print_debug = false;
 
-/**
- * Generate requested number of houses with requested parameters.
- */
 void generate_houses(int min_area, int max_area, int min_people, int max_people, int number_of_houses,
                      int min_distance, int max_distance, vector<House> *houses) {
     random_device rd;
@@ -46,11 +43,6 @@ void generate_houses(int min_area, int max_area, int min_people, int max_people,
     }
 }
 
-/**
- * Compute average day temperature from sinus function according to values from Dukovany region.
- * @param day   Day of the year requested.
- * @return      Average temperature that day.
- */
 double get_temperature(int day) {
     double temperature;
 
@@ -64,12 +56,6 @@ double get_temperature(int day) {
     return temperature;
 }
 
-/**
- * Set heating on or off according to values from Ministry of the Environment of the Czech Republic.
- * @param today         Temperature today.
- * @param yesterday     Temperature yesterday.
- * @param heating_on    Heating to be set.
- */
 void check_temperature(double today, double yesterday, bool *heating_on) {
     if (today <= 13 && yesterday <= 13) {
         /** Turn on after two consecutive days with temperature under 13 degree Celsius. */
@@ -80,12 +66,6 @@ void check_temperature(double today, double yesterday, bool *heating_on) {
     }
 }
 
-/**
- * What is the percentage of heating for given temperature.
- * @param temperature
- * @param heating_on
- * @return  Value between 0 and 1.
- */
 double get_heating_percentage(double temperature, bool heating_on) {
     const int min_temperature = -15;
     const int max_temperature = 13;
@@ -108,15 +88,9 @@ double get_heating_percentage(double temperature, bool heating_on) {
     return heating_percentage * heating_percentage;
 }
 
-/**
- * Computation of output temperature of water from pipeline of given parameters.
- * @param length                Length of the pipeline.
- * @param input_temperature     Input temperature of the water.
- * @return  Output temperature of the water.
- */
 double pipeline_output_temperature(double length, double input_temperature) {
     const double outside_temperature = -15;
-    const double alfa_v = 14.65;                // Soucinitel prestupu tepla do okoli.
+    const double alfa_v = 14.65;
     const double isolation_thermal_conductivity = 0.5;
     const double tube_diameter = 0.325;
     const double tube_isolation = 0.3;
@@ -133,14 +107,6 @@ double pipeline_output_temperature(double length, double input_temperature) {
     return input_temperature - heat_loss / (water_flow * specific_heat_capacity);
 }
 
-/**
- * Computation of the power needed in station for a specific day and house.
- * @param house
- * @param heating_percentage
- * @param heating_liters        Liters needed to heat the house.
- * @param cooking_liters        Volume of hot water needed.
- * @return  Power in watt hours.
- */
 double
 station_house_transmission(House house, double heating_percentage, double *heating_liters, double *cooking_liters) {
     const double specific_heat_capacity = 4.18;
@@ -190,12 +156,6 @@ station_house_transmission(House house, double heating_percentage, double *heati
     return heat_loss;
 }
 
-/**
- * Computation of the power needed from plant for a specific day.
- * @param station_heating_loss_wh   Power needed by the station.
- * @param liters                    Volume of the water needed.
- * @return  Power in watt hours.
- */
 double plant_station_transmission(double station_heating_loss_wh, double *liters) {
     const int distance_from_plant = 5;
     const double specific_heat_capacity = 4.18;
@@ -222,9 +182,6 @@ double plant_station_transmission(double station_heating_loss_wh, double *liters
     return heat_loss;
 }
 
-/**
- * Simulation of one year with all the needed computation.
- */
 void simulate_one_year(const vector<House> *houses, int *heating_days, double *year_temperature_count,
                        double *gas_emissions, double *coal_emissions, double *electricity_emissions,
                        double *plant_heat_loss, double *year_station_heat_loss,
@@ -344,7 +301,8 @@ int main(int argc, char *argv[]) {
     plant_pump_power = year_pump_max_power * plant_pump_percentage;
 
     nuclear_emissions =
-            nuclear_emissions_constant * (year_plant_heat_loss + heating_pump_power + cooking_pump_power + plant_pump_power);
+            nuclear_emissions_constant *
+            (year_plant_heat_loss + heating_pump_power + cooking_pump_power + plant_pump_power);
 
     nuclear_construction_emissions =
             construction_emissions_1km_wide_pipeline * 2 * wide_pipeline_length +

@@ -1,13 +1,18 @@
-//
-// Created by danielkonecny on 28.11.19.
-//
+/**
+ * @project			Carbon Footprint in Energetics and Heating Industry
+ * @file			House.cpp
+ * @version 		1.0
+ * @course			IMS - Modelling and Simulation
+ * @organisation	Brno University of Technology - Faculty of Information Technology
+ * @author			Daniel Konecny (xkonec75), Filip Jerabek (xjerab24)
+ * @date			2. 12. 2019
+ */
 
 #include "House.h"
 
 const int hours_per_day = 24;
 const int days_per_year = 365;
 const int boiler_power_for_squared_meter = 100;
-const int liters_per_person = 96;
 const int year_wh_per_squared_meter = 110e3;
 const double year_wh_per_people[11] = {
         0e3,
@@ -23,14 +28,8 @@ const double year_wh_per_people[11] = {
         9750e3
 };
 
-void House::Print() {
-    cout << number_of_people << ": " << area << " m3 (" << distance << " m)" << endl;
-}
-
-//
 double House::CountEmissions(double emissions_constant) {
-    // g         g/Wh                    Wh             variable      variable            Wh
-    return emissions_constant * (year_wh_per_people[number_of_people] + area * year_wh_per_squared_meter);
+    return emissions_constant * (year_wh_per_people[number_of_people] + year_wh_per_squared_meter * area);
 }
 
 double House::CountAreaEmissionsWithPercentage(double emissions_constant, double heating_percentage) {
@@ -39,7 +38,6 @@ double House::CountAreaEmissionsWithPercentage(double emissions_constant, double
 }
 
 double House::CountPeopleEmissions(double emissions_constant) {
-    // g         g/Wh         *         Wh             variable      /    constant
     return emissions_constant * year_wh_per_people[number_of_people] / days_per_year;
 }
 
@@ -50,8 +48,4 @@ double House::CountHouseHeatLossPerDay(double heating_percentage) {
 
 double House::CountPeopleHeatLossPerDay() {
     return year_wh_per_people[number_of_people] / days_per_year;
-}
-
-double House::CountPeopleLitersLossPerDay() {
-    return number_of_people * liters_per_person;
 }
