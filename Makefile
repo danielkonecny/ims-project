@@ -12,6 +12,7 @@ SUFFIX = cpp
 PFLAGS = -Wall -Wextra -pedantic -O2
 LIB = -lsimlib -lm
 BIN = model
+PACK = 02_xkonec75_xjerab24
 
 # Options
 all: $(BIN)
@@ -29,10 +30,10 @@ clear:
 	rm *.o $(BIN)
 
 pack:
-	zip $(BIN).zip *.$(SUFFIX) *.h
+	zip $(PACK).zip *.$(SUFFIX) *.h
 
 zip:
-	zip $(BIN).zip *.$(SUFFIX) *.h
+	zip $(PACK).zip *.$(SUFFIX) *.h
 
 # Binary
 $(BIN): $(BIN).o House.o
